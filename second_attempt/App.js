@@ -1,54 +1,21 @@
-import React from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {Navigation} from 'react-native-navigation';
 
-import PlaceList from "./src/components/PlaceList/PlaceList.js";
-import PlaceInput from "./src/components/PlaceInput/PlaceInput.js";
 
-export default class App extends React.Component {
-  state = {
-    places: []
-  };
+import AuthScreen from './src/screens/Auth/Auth.js';
+import  SharePlaceScreen  from './src/screens/Share Place/SharePlace.js';
+import FindPlaceScreen from './src/screens/Find Place/FindPlace.js';
 
-  placeAddedHandler = placeName => {
-    this.setState(prevState => {
-      return {
-        places: prevState.places.concat({
-          key: Math.random(),
-          value: placeName
-        })
-      };
-    });
-  };
+// Register Screens 
 
-  placeDeletedHandler = index => {
-    this.setState(prevState => {
-      return { 
-        places: prevState.places.filter(place => {
-          return place.key !== key;
-        })
-      };
-    });
-  };
+Navigation.registerComponent("awesome-places.AuthScreen", ()=> AuthScreen);
+Navigation.registerComponent("awesome-places.SharePlaceScreen", ()=> SharePlaceScreen);
+Navigation.registerComponent("awesome-places.FindPlaceScreen", ()=> FindPlaceScreen);
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <PlaceInput onPlaceAdded={this.placeAddedHandler} />
-        <PlaceList
-          places={this.state.places}
-          onItemDeleted={this.placeDeletedHandler}
-        />
-      </View>
-    );
-  }
-}
+// Start a App
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 26,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start"
+Navigation.startSingleScreenApp({
+  screen : {
+    screen : "awesome-places.AuthScreen", 
+    title : "Login"
   }
 });
