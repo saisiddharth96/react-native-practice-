@@ -1,1 +1,1 @@
-export { addPlace, deletePlace, deselectPlace, selectPlace } from './places.js'; 
+export { addPlace, deletePlace } from './places.js'; 
