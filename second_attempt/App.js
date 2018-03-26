@@ -6,11 +6,10 @@ import SharePlaceScreen from "./src/screens/Share Place/SharePlace.js";
 import FindPlaceScreen from "./src/screens/Find Place/FindPlace.js";
 import configureStore from "./src/store/configureStore.js";
 import PlaceDetail from './src/screens/PlaceDetail/PlaceDetail.js';
+import SideDrawer from './src/screens/SideDrawer/SideDrawer.js';
 
 const store = configureStore();
-
 // Register Screens
-
 Navigation.registerComponent(
   "awesome-places.AuthScreen",
   () => AuthScreen,
@@ -32,6 +31,12 @@ Navigation.registerComponent(
 Navigation.registerComponent(
   "awesome-places.PlaceDetailScreen",
   ()=> PlaceDetail,
+  store,
+  Provider
+);
+Navigation.registerComponent(
+  "awesome-places.SideDrawerComponent",
+  ()=> SideDrawer,
   store,
   Provider
 );
