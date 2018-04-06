@@ -40,6 +40,10 @@ const startTabs = () => {
           }
         }
       ],
+      appStyle : {        
+        tabBarButtonColor : "#000000",
+        tabBarSelectedButtonColor : "#33AAFF",        
+      },
       drawer: {
         left: {
           screen: "awesome-places.SideDrawerComponent"
