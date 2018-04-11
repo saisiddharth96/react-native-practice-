@@ -1,17 +1,43 @@
 import React, { Component } from "react";
 import { View, Image, StyleSheet, Button } from "react-native";
+import ImagePicker from "react-native-image-picker";
 
-import backgroundImage from "../../assets/dog.jpg";
+// import backgroundImage from "../../assets/dog.jpg";
 
 class PickImage extends Component {
+  state = {
+    pickedImage: null
+  };
+
+  pickImageHandler = () => {
+    ImagePicker.showImagePicker({title : "Pick an Image"},res => {
+      if(res.didCancel){
+        console.log("User Cancelled");        
+      }
+      else if (res.error){
+        console.log("Error picking image", res.error)
+        alert("Error Choosing Image please try again");
+      }
+      else{
+        this.setState({
+          pickedImage : {uri : res.uri}
+        });
+        this.props.onImagePicked({uri : res.uri, base64 : res.data});
+      }
+    });
+  };
+
   render() {
     return (
-      <View style = {styles.container} >
+      <View style={styles.container}>
         <View style={styles.placeholder}>
-          <Image source={backgroundImage} style={styles.previewImage} />
+          <Image source={this.state.pickedImage} style={styles.previewImage} />
         </View>
         <View style={styles.button}>
-          <Button title="Upload An Image Image" onPress = {()=> alert("Pick Image Clicked") } />
+          <Button
+            title="Upload An Image Image"
+            onPress={this.pickImageHandler}
+          />
         </View>
       </View>
     );
@@ -19,10 +45,10 @@ class PickImage extends Component {
 }
 
 const styles = StyleSheet.create({
-    container : {
-      width : "100%",
-      alignItems : "center"
-    },
+  container: {
+    width: "100%",
+    alignItems: "center"
+  },
   placeholder: {
     borderWidth: 1,
     borderColor: "black",

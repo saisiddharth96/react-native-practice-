@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Apr 06 01:10:23 IST 2018
+#Wed Apr 11 15:42:37 IST 2018
 5.base=C\:\\Users\\saisi\\Projects\\RN\\RN_Practical_guide\\second_attempt\\android\\app\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\0
 22.path=fonts/EvilIcons.ttf
 32.set=NATIVE_RESOURCE

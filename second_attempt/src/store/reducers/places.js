@@ -16,9 +16,9 @@ const reducer = (state = initialState, action) => {
           key: Math.random(),
           name: action.placeName,
           image: {
-            uri:
-              "http://www.hdwallpapery.com/static/images/1391099215267_hero2_niQ3B7S.jpg"
-          }
+            uri: action.image.uri
+          },
+          location: action.location
         })
       };
     case DELETE_PLACE:
