@@ -9,11 +9,12 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 
-import startTabs from "./../Main Tabs/startMainTabs.js";
+// import startTabs from "./../Main Tabs/startMainTabs.js";
 import DefaultInput from "../../components/UI/DefaultInput/DefaultInput.js";
 import HeadingText from "../../components/UI/HeadingText/HeadingText.js";
 import MainText from "../../components/UI/MainText/MainText.js";
@@ -77,13 +78,13 @@ class AuthScreen extends Component {
     });
   };
 
-  loginHandler = () => {
+  authHandler = () => {
     const authData = {
       email: this.state.controls.email.value,
       password: this.state.controls.password.value
     };
-    this.props.onLogin(authData);
-    startTabs();
+    this.props.onTryAuth(authData, this.state.authMode);
+    // startTabs();
   };
 
   updateInputState = (key, value) => {
@@ -138,6 +139,21 @@ class AuthScreen extends Component {
   render() {
     let headingText = null;
     let confirmPasswordControl = null;
+    let submitButton = (
+      <ButtonWithBackground
+        onPress={this.authHandler}
+        color="transparent"
+        disabled={
+          (!this.state.controls.confirmPassword.valid &&
+            this.state.authMode === "signup") ||
+          !this.state.controls.email.valid ||
+          !this.state.controls.password.valid
+        }
+      >
+        Submit
+      </ButtonWithBackground>
+    );
+
 
     if (this.state.viewMode === "portrait") {
       headingText = (
@@ -172,6 +188,11 @@ class AuthScreen extends Component {
         </View>
       );
     }
+
+    if(this.props.isLoading){
+      submitButton = <ActivityIndicator size = "large"/>
+    }
+
     return (
       <ImageBackground
         source={backgroundImage}
@@ -187,7 +208,7 @@ class AuthScreen extends Component {
               ? "Need an Account? Sign Up"
               : "Already have an account? Login"}
           </ButtonWithBackground>
-          <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.inputContainer}>
               <DefaultInput
                 placeholder="Enter Email Address"
@@ -232,18 +253,7 @@ class AuthScreen extends Component {
               </View>
             </View>
           </TouchableWithoutFeedback>
-          <ButtonWithBackground
-            onPress={this.loginHandler}
-            color="transparent"
-            disabled={
-              (!this.state.controls.confirmPassword.valid &&
-                this.state.authMode === "signup") ||
-              !this.state.controls.email.valid ||
-              !this.state.controls.password.valid
-            }
-          >
-            Submit
-          </ButtonWithBackground>
+          {submitButton}
         </KeyboardAvoidingView>
       </ImageBackground>
     );
@@ -288,10 +298,16 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onLogin: authData => dispatch(tryAuth(authData))
+const mapStateToProps = state =>{
+  return{
+    isLoading : state.ui.isLoading
   };
 };
 
-export default connect(null, mapDispatchToProps)(AuthScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAuth: (authData, authMode) => dispatch(tryAuth(authData, authMode))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
